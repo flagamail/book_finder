@@ -125,12 +125,23 @@ Notes:
 
 ## 7. Error Handling & Async Loading
 - Define Failure types (NetworkFailure, ServerFailure, CacheFailure, ValidationFailure) in core/errors.
-- Map exceptions from network and SQLite to Failures in repositories.
+- Map exceptions from network (Dio) and SQLite to Failures in repositories.
 - For network calls use exponential backoff for retries (2 tries by default).
+- Debounce & Distinct:
+  - Debounce user queries 300–500ms (shorter for reactive UIs, longer to reduce traffic).
+  - Apply distinct() so the same query string doesn’t trigger duplicate requests.
+- Cancellation best practices:
+  - switchMap in the event transformer cancels the previous stream mapping, but it does NOT cancel an already-started Dio request.
+  - Use Dio CancelToken and cancel the previous token before starting a new request.
+  - Single responsibility: repositories accept an optional CancelToken so the caller (BLoC) controls cancellation and tests can verify it.
+  - Navigation: cancel any in-flight request in bloc.close() to stop background work when leaving the screen.
+- Error UX:
+  - Map DioError/DioException to user-friendly messages (timeouts, offline, server errors) and provide a Retry action in UI states.
+  - Show transient issues as snackbars/toasts where appropriate.
 - UI shows:
   - Shimmer on initial loading
   - Pull-to-refresh indicator
-  - UI should display localized/clear messages and a retry action.
+  - UI should display localized/clear messages and a Retry action
   - Snackbars/toasts for transient errors
   - Empty state when no results
 

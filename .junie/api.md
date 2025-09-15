@@ -26,9 +26,19 @@ Pagination strategy
 - Determine last page by accumulating results length >= numFound.
 - Prevent duplicate in-flight requests.
 
+Cancellation & Debounce
+- Debounce queries 300–500ms in the presentation layer to reduce traffic.
+- switchMap in the event transformer cancels the previous stream mapping, but it does NOT cancel an already-started Dio request.
+- Use Dio CancelToken: cancel the previous token before starting a new request; pass the current token into repository methods so callers control cancellation.
+
 Error handling
-- Map network errors to Failure types.
-- Use short timeouts and up to 2 retries with exponential backoff.
+- Map DioError/DioException types to Failure and to user-friendly messages. Example mapping:
+  - connectionTimeout/receiveTimeout: "Connection timed out. Please try again."
+  - badResponse (4xx/5xx): "Server error. Please try again later."
+  - cancel: silently ignore or show brief info if appropriate
+  - other/noConnection: "You appear to be offline. Check your internet connection."
+- Provide Retry action in UI states when appropriate.
+- Use short timeouts and up to 2 retries with exponential backoff in the network client.
 
 Image handling
 - Prefer M size cover: https://covers.openlibrary.org/b/id/{coverId}-M.jpg
