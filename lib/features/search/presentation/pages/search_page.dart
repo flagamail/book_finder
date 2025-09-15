@@ -1,3 +1,5 @@
+import 'package:book_finder/domain/entities/book.dart';
+import 'package:book_finder/features/details/presentation/pages/details_page.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/shimmer_list.dart';
 import '../widgets/error_message.dart';
@@ -13,8 +15,14 @@ class SearchPage extends StatelessWidget {
     // TODO: Replace with BlocBuilder<SearchBloc, SearchState>
     final bool isLoading = false;
     final bool hasError = false;
-    final bool isEmpty = false;
-    final List<Map<String, String>> books = [];
+    final List<Book> books = [
+      const Book(
+        id: '1',
+        title: 'Sample Book',
+        author: 'Author Name',
+      )
+    ];
+    final bool isEmpty = books.isEmpty;
 
     return Scaffold(
       appBar: AppBar(
@@ -47,11 +55,15 @@ class SearchPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final book = books[index];
                       return BookListItem(
-                        title: book['title'] ?? '',
-                        author: book['author'] ?? '',
-                        coverUrl: book['coverUrl'],
+                        title: book.title,
+                        author: book.author,
+                        coverUrl: book.coverUrl,
                         onTap: () {
-                          // TODO: Navigate to details
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => DetailsPage(book: book),
+                            ),
+                          );
                         },
                       );
                     },

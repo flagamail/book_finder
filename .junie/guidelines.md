@@ -12,6 +12,7 @@ This is the canonical entry point for the project documentation. Use the Table o
 - [Persistence (SQLite)](./persistence.md)
 - [Testing (TDD)](./testing.md)
 - [UI Guidelines](./ui-guidelines.md)
+- [Theme](./theme.md)
 - [CI/CD](./ci-cd.md)
 - [Developer Setup](./dev-setup.md)
 - [API Contracts](./api-contracts/openlibrary-example.json)

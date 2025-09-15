@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AnimatedCover extends StatefulWidget {
-  final String imageUrl;
+  final String? imageUrl;
   final double size;
-  const AnimatedCover({super.key, required this.imageUrl, this.size = 160});
+  const AnimatedCover({super.key, this.imageUrl, this.size = 160});
 
   @override
   State<AnimatedCover> createState() => _AnimatedCoverState();
@@ -47,21 +47,27 @@ class _AnimatedCoverState extends State<AnimatedCover> with SingleTickerProvider
         },
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.network(
-            widget.imageUrl,
-            width: widget.size,
-            height: widget.size * 1.5,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(
-              width: widget.size,
-              height: widget.size * 1.5,
-              color: Colors.grey[300],
-              child: const Icon(Icons.broken_image, size: 48),
-            ),
-          ),
+          child: widget.imageUrl != null
+              ? Image.network(
+                  widget.imageUrl!,
+                  width: widget.size,
+                  height: widget.size * 1.5,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Container(
+                    width: widget.size,
+                    height: widget.size * 1.5,
+                    color: Colors.grey[300],
+                    child: const Icon(Icons.broken_image, size: 48),
+                  ),
+                )
+              : Container(
+                  width: widget.size,
+                  height: widget.size * 1.5,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.broken_image, size: 48),
+                ),
         ),
       ),
     );
   }
 }
-

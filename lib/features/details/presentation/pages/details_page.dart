@@ -1,94 +1,97 @@
-import '../widgets/animated_cover.dart';
+import 'package:book_finder/domain/entities/book.dart';
+import 'package:book_finder/features/details/presentation/widgets/animated_cover.dart';
 import 'package:flutter/material.dart';
 
 class DetailsPage extends StatelessWidget {
-  const DetailsPage({super.key});
+  final Book book;
+  const DetailsPage({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
     // TODO: Replace with BlocBuilder<DetailsBloc, DetailsState>
     final bool isLoading = false;
     final bool hasError = false;
-    final Map<String, dynamic> book = {
-      'title': 'Sample Book',
-      'author': 'Author Name',
-      'year': '2022',
-      'coverUrl': null,
-    };
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Book Details'),
-      ),
-      body: Builder(
-        builder: (context) {
-          if (isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                  const SizedBox(height: 12),
-                  const Text('Failed to load book details.'),
-                  const SizedBox(height: 16),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: Dispatch retry event
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  if (book['coverUrl'] != null)
-                    AnimatedCover(imageUrl: book['coverUrl'])
-                  else
-                    Container(
-                      width: 160,
-                      height: 240,
-                      color: Colors.grey[300],
-                      child: const Icon(Icons.broken_image, size: 48),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Book Details'),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
+        body: Builder(
+          builder: (context) {
+            if (isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                    const SizedBox(height: 12),
+                    const Text('Failed to load book details.'),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        // TODO: Dispatch retry event
+                      },
+                      icon: const Icon(Icons.refresh),
+                      label: const Text('Retry'),
                     ),
-                  const SizedBox(height: 24),
-                  Text(
-                    book['title'] ?? '',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headlineSmall,
-                    textAlign: TextAlign.center,
+                  ],
+                ),
+              );
+            } else {
+              return SingleChildScrollView(
+                child: Card(
+                  elevation: 4,
+                  margin: EdgeInsetsGeometry.symmetric(horizontal: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    book['author'] ?? '',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .titleMedium,
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedCover(imageUrl: book.coverUrl),
+
+                    /*  Hero(
+                        tag: book.title,
+                        child: AnimatedCover(imageUrl: book.coverUrl),
+                      ),*/
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              book.title,
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'by ${book.author}',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              book.year != null
+                                  ? 'Published in ${book.year}'
+                                  : 'Year not available',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    book['year'] != null ? 'Published: ${book['year']}' : '',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyMedium,
-                  ),
-                ],
-              ),
-            );
-          }
-        },
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

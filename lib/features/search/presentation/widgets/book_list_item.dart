@@ -16,13 +16,15 @@ class BookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: coverUrl != null
-          ? Image.network(coverUrl!, width: 48, height: 72, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.book))
-          : const Icon(Icons.book),
+      leading: Hero(
+        tag: title,
+        child: coverUrl != null
+            ? Image.network(coverUrl!, width: 48, height: 72, fit: BoxFit.cover, errorBuilder: (_, __, ___) => const Icon(Icons.book))
+            : const Icon(Icons.book),
+      ),
       title: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis),
       subtitle: Text(author, maxLines: 1, overflow: TextOverflow.ellipsis),
       onTap: onTap,
     );
   }
 }
-

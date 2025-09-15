@@ -1,0 +1,103 @@
+{
+  "color": {
+    "light": {
+      "primary": "#4A4E69",
+      "primaryContainer": "#E6E3F2",
+      "onPrimary": "#FFFFFF",
+      "secondary": "#9A8C98",
+      "onSecondary": "#FFFFFF",
+      "background": "#F7F5F2",
+      "surface": "#FFFFFF",
+      "onSurface": "#1F1D2B",
+      "muted": "#6E6B76",
+      "accent": "#C08497",
+      "error": "#B00020"
+    },
+    "dark": {
+      "primary": "#BFC4FF",
+      "primaryContainer": "#303047",
+      "onPrimary": "#0F1724",
+      "secondary": "#C5B7C1",
+      "onSecondary": "#0F1724",
+      "background": "#0F1114",
+      "surface": "#111318",
+      "onSurface": "#E6E7EB",
+      "muted": "#9DA0A6",
+      "accent": "#E8A0B6",
+      "error": "#FF6B6B"
+    }
+  },
+  "space": {
+    "xs": 4,
+    "sm": 8,
+    "md": 16,
+    "lg": 24,
+    "xl": 32
+  },
+  "radius": {
+    "chip": 8,
+    "card": 12,
+    "dialog": 20
+  },
+  "type": {
+    "display": {
+      "fontFamily": "Merriweather",
+      "fontSize": 28,
+      "fontWeight": 700,
+      "lineHeight": 1.2
+    },
+    "headline": {
+      "fontFamily": "Merriweather",
+      "fontSize": 20,
+      "fontWeight": 600,
+      "lineHeight": 1.25
+    },
+    "title": {
+      "fontFamily": "Merriweather",
+      "fontSize": 16,
+      "fontWeight": 600,
+      "lineHeight": 1.3
+    },
+    "body": {
+      "fontFamily": "Inter",
+      "fontSize": 14,
+      "fontWeight": 400,
+      "lineHeight": 1.4
+    },
+    "label": {
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": 500,
+      "lineHeight": 1.2
+    },
+    "caption": {
+      "fontFamily": "Inter",
+      "fontSize": 11,
+      "fontWeight": 400,
+      "lineHeight": 1.2
+    }
+  },
+  "motion": {
+    "duration": {
+      "short": 120,
+      "medium": 240,
+      "long": 420
+    },
+    "easing": {
+      "standard": "easeOutCubic",
+      "gentle": "easeInOut"
+    }
+  },
+  "shimmer": {
+    "light": {
+      "baseColor": "#ECE9F8",
+      "highlightColor": "#F7F5FF",
+      "periodMs": 1400
+    },
+    "dark": {
+      "baseColor": "#1B1A23",
+      "highlightColor": "#2B2A35",
+      "periodMs": 1400
+    }
+  }
+}
