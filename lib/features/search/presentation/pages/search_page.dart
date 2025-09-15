@@ -52,8 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                   return ErrorMessage(
                     message: state.message,
                     onRetry: () {
-                      final query = (context.read<SearchBloc>().state as SearchLoadFailure).message;
-                      context.read<SearchBloc>().add(SearchRequested(query));
+                      context.read<SearchBloc>().add(RetryRequested());
                     },
                   );
                 }
@@ -61,28 +60,33 @@ class _SearchPageState extends State<SearchPage> {
                   if (state.books.isEmpty) {
                     return const EmptyMessage(message: 'No books found.');
                   }
-                  return ListView.builder(
-                    controller: _scrollController,
-                    itemCount: state.hasReachedMax ? state.books.length : state.books.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index >= state.books.length) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final book = state.books[index];
-                      return BookListItem(
-                        id: book.id,
-                        title: book.title,
-                        author: book.author,
-                        coverUrl: book.coverUrl,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => DetailsPage(book: book),
-                            ),
-                          );
-                        },
-                      );
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<SearchBloc>().add(RetryRequested());
                     },
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: state.hasReachedMax ? state.books.length : state.books.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index >= state.books.length) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        final book = state.books[index];
+                        return BookListItem(
+                          id: book.id,
+                          title: book.title,
+                          author: book.author,
+                          coverUrl: book.coverUrl,
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DetailsPage(book: book),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   );
                 }
                 return const SizedBox.shrink();

@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:book_finder/features/search/domain/repositories/search_repository.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_event.dart';
@@ -16,6 +18,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc({required this.searchRepository}) : super(SearchInitial()) {
     on<SearchRequested>(_onSearchRequested, transformer: debounce(_duration));
     on<LoadNextPage>(_onLoadNextPage);
+    on<RetryRequested>(_onRetryRequested);
   }
 
   int _page = 1;
@@ -65,6 +68,16 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           );
         },
       );
+    }
+  }
+
+  Future<void> _onRetryRequested(
+    RetryRequested event,
+    Emitter<SearchState> emit,
+  ) async {
+    if (_query.isNotEmpty) {
+      // Re-dispatch SearchRequested with the last query
+      add(SearchRequested(_query));
     }
   }
 }

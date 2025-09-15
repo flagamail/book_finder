@@ -49,11 +49,8 @@ class AppTheme {
   static const _lightPrimaryContainer = Color(0xFFE6E3F2);
   static const _lightOnPrimary = Color(0xFFFFFFFF);
   static const _lightSecondary = Color(0xFF9A8C98);
-  static const _lightBackground = Color(0xFFF7F5F2);
   static const _lightSurface = Color(0xFFFFFFFF);
   static const _lightOnSurface = Color(0xFF1F1D2B);
-  static const _lightMuted = Color(0xFF6E6B76);
-  static const _lightAccent = Color(0xFFC08497);
   static const _lightError = Color(0xFFB00020);
 
   // Dark tokens
@@ -61,11 +58,8 @@ class AppTheme {
   static const _darkPrimaryContainer = Color(0xFF303047);
   static const _darkOnPrimary = Color(0xFF0F1724);
   static const _darkSecondary = Color(0xFFC5B7C1);
-  static const _darkBackground = Color(0xFF0F1114);
   static const _darkSurface = Color(0xFF111318);
   static const _darkOnSurface = Color(0xFFE6E7EB);
-  static const _darkMuted = Color(0xFF9DA0A6);
-  static const _darkAccent = Color(0xFFE8A0B6);
   static const _darkError = Color(0xFFFF6B6B);
 
   // Spacing & radii
@@ -91,7 +85,6 @@ class AppTheme {
       primaryContainer: _lightPrimaryContainer,
       secondary: _lightSecondary,
       onSecondary: _lightOnPrimary,
-      background: _lightBackground,
       surface: _lightSurface,
       onSurface: _lightOnSurface,
       error: _lightError,
@@ -133,7 +126,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: colorScheme.surface,
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
@@ -189,7 +182,6 @@ class AppTheme {
       primaryContainer: _darkPrimaryContainer,
       secondary: _darkSecondary,
       onSecondary: _darkOnPrimary,
-      background: _darkBackground,
       surface: _darkSurface,
       onSurface: _darkOnSurface,
       error: _darkError,
@@ -239,7 +231,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: colorScheme,
-      scaffoldBackgroundColor: colorScheme.background,
+      scaffoldBackgroundColor: colorScheme.surface,
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,

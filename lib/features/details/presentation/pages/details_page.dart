@@ -10,9 +10,6 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // TODO: Replace with BlocBuilder<DetailsBloc, DetailsState>
-    final bool isLoading = false;
-    final bool hasError = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -20,28 +17,6 @@ class DetailsPage extends StatelessWidget {
       ),
       body: Builder(
         builder: (context) {
-          if (isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                  const SizedBox(height: AppTheme.spaceMd),
-                  const Text('Failed to load book details.'),
-                  const SizedBox(height: AppTheme.spaceMd),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // TODO: Dispatch retry event
-                    },
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          } else {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(AppTheme.spaceMd),
               child: Column(
@@ -80,7 +55,6 @@ class DetailsPage extends StatelessWidget {
               ),
             );
           }
-        },
       ),
     );
   }

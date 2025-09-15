@@ -1,3 +1,4 @@
+import 'package:book_finder/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -7,24 +8,43 @@ class ShimmerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final shimmerStyle = theme.extension<AppShimmerStyle>()!;
+
     return ListView.builder(
       itemCount: itemCount,
       itemBuilder: (context, index) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTheme.spaceMd,
+          vertical: AppTheme.spaceSm,
+        ),
         child: Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
+          baseColor: shimmerStyle.baseColor,
+          highlightColor: shimmerStyle.highlightColor,
+          period: shimmerStyle.period,
           child: Row(
             children: [
-              Container(width: 48, height: 72, color: Colors.white),
-              const SizedBox(width: 12),
+              Container(
+                width: 64, // Aligned with theme.md thumbnail size
+                height: 96, // Aligned with theme.md thumbnail size
+                color: theme.colorScheme.surface, // Use theme color
+              ),
+              const SizedBox(width: AppTheme.spaceMd),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(height: 16, width: double.infinity, color: Colors.white),
-                    const SizedBox(height: 8),
-                    Container(height: 12, width: 100, color: Colors.white),
+                    Container(
+                      height: 16,
+                      width: double.infinity,
+                      color: theme.colorScheme.surface,
+                    ),
+                    const SizedBox(height: AppTheme.spaceSm),
+                    Container(
+                      height: 12,
+                      width: 100,
+                      color: theme.colorScheme.surface,
+                    ),
                   ],
                 ),
               ),
@@ -35,4 +55,3 @@ class ShimmerList extends StatelessWidget {
     );
   }
 }
-

@@ -23,7 +23,7 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
       } else {
         throw ServerException();
       }
-    } on DioError {
+    } on DioException {
       throw ServerException();
     }
   }
