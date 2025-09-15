@@ -1,0 +1,20 @@
+{
+  "numFound": 234,
+  "start": 0,
+  "docs": [
+    {
+      "key": "/works/OL82563W",
+      "title": "Harry Potter and the Philosopher's Stone",
+      "author_name": ["J. K. Rowling"],
+      "cover_i": 8231856,
+      "first_publish_year": 1997
+    },
+    {
+      "key": "/works/OL82564W",
+      "title": "Harry Potter and the Chamber of Secrets",
+      "author_name": ["J. K. Rowling"],
+      "cover_i": 8231857,
+      "first_publish_year": 1998
+    }
+  ]
+}
