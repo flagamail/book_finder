@@ -55,6 +55,7 @@ class SearchPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final book = books[index];
                       return BookListItem(
+                        id: book.id,
                         title: book.title,
                         author: book.author,
                         coverUrl: book.coverUrl,

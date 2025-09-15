@@ -41,6 +41,7 @@ Primary tokens (used in `ColorScheme` and as tokens in `design-tokens.json`):
 * `primary` — #BFC4FF
 * `primaryContainer` — #303047
 * `onPrimary` — #0F1724
+* `secondary` — #C5B7C1
 * `background` — #0F1114
 * `surface` — #111318
 * `onSurface` — #E6E7EB

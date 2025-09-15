@@ -36,10 +36,7 @@ Details Screen
   - Display error message with Retry button if load fails
 
 Visual Design
-- Theming: follow Material 3 where possible; support light/dark modes
-- Colors: primary for CTAs; neutral for placeholders
-- Typography: titleMedium for list items, titleLarge for details title
-- Spacing: 8/12/16dp rhythm; list item height ~88dp
+- For all theme-related guidelines, including colors, typography, and spacing, refer to [Theme Guidelines](./theme.md).
 
 Images
 - Use NetworkImage with caching (e.g., cached_network_image if added)
