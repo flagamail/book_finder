@@ -1,6 +1,5 @@
-// ignore_for_file: depend_on_referenced_packages
-
 import 'package:bloc/bloc.dart';
+import 'package:book_finder/core/utils/app_logger.dart';
 import 'package:book_finder/features/search/domain/repositories/search_repository.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_event.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_state.dart';
@@ -19,6 +18,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     on<SearchRequested>(_onSearchRequested, transformer: debounce(_duration));
     on<LoadNextPage>(_onLoadNextPage);
     on<RetryRequested>(_onRetryRequested);
+
+    appLogger.d('SearchBloc initialized');
   }
 
   int _page = 1;
@@ -28,19 +29,28 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchRequested event,
     Emitter<SearchState> emit,
   ) async {
+    appLogger.d('SearchRequested event received: ${event.query}');
     _query = event.query;
     if (_query.isEmpty) {
+      appLogger.i('Search query is empty, emitting SearchInitial');
       return emit(SearchInitial());
     }
 
     _page = 1;
     emit(SearchLoadInProgress());
+    appLogger.i('Emitting SearchLoadInProgress for query: $_query');
 
     final result = await searchRepository.searchBooks(_query, page: _page);
 
     result.fold(
-      (failure) => emit(SearchLoadFailure(failure.message)),
+      (failure) {
+        appLogger.e(
+          'SearchLoadFailure: ${failure.message}',
+        );
+        emit(SearchLoadFailure(failure.message));
+      },
       (books) {
+        appLogger.i('SearchLoadSuccess with ${books.length} books');
         emit(SearchLoadSuccess(books, hasReachedMax: books.isEmpty));
       },
     );
@@ -50,16 +60,27 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     LoadNextPage event,
     Emitter<SearchState> emit,
   ) async {
+    appLogger.d('LoadNextPage event received');
     if (state is SearchLoadSuccess) {
       final currentState = state as SearchLoadSuccess;
-      if (currentState.hasReachedMax) return;
+      if (currentState.hasReachedMax) {
+        appLogger.i('Already reached max results, not loading next page');
+        return;
+      }
 
       _page++;
+      appLogger.i('Loading next page: $_page for query: $_query');
       final result = await searchRepository.searchBooks(_query, page: _page);
 
       result.fold(
-        (failure) => emit(SearchLoadFailure(failure.message)),
+        (failure) {
+          appLogger.e(
+            'LoadNextPage Failure: ${failure.message}',
+          );
+          emit(SearchLoadFailure(failure.message));
+        },
         (newBooks) {
+          appLogger.i('Loaded ${newBooks.length} new books for page $_page');
           emit(
             SearchLoadSuccess(
               currentState.books + newBooks,
@@ -75,9 +96,13 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     RetryRequested event,
     Emitter<SearchState> emit,
   ) async {
+    appLogger.d('RetryRequested event received');
     if (_query.isNotEmpty) {
-      // Re-dispatch SearchRequested with the last query
+      appLogger.i('Retrying search for query: $_query');
       add(SearchRequested(_query));
+    } else {
+      appLogger.i('No query to retry, emitting SearchInitial');
+      emit(SearchInitial());
     }
   }
 }

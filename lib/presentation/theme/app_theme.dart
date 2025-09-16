@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// ThemeExtension for shimmer / custom tokens not represented by ThemeData.
 @immutable
@@ -91,33 +90,33 @@ class AppTheme {
       onError: Colors.white,
     );
 
-    final textTheme = TextTheme(
-      displayLarge: GoogleFonts.merriweather(
+    const textTheme = TextTheme(
+      displayLarge: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w700,
         height: 1.2,
       ),
-      headlineLarge: GoogleFonts.merriweather(
+      headlineLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w600,
         height: 1.25,
       ),
-      titleLarge: GoogleFonts.merriweather(
+      titleLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         height: 1.3,
       ),
-      bodyLarge: GoogleFonts.inter(
+      bodyLarge: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 1.4,
       ),
-      labelSmall: GoogleFonts.inter(
+      labelSmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         height: 1.2,
       ),
-      bodySmall: GoogleFonts.inter(
+      bodySmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w400,
         height: 1.2,
@@ -151,7 +150,7 @@ class AppTheme {
             borderRadius: BorderRadius.circular(radiusChip),
           ),
           padding: EdgeInsets.symmetric(horizontal: spaceMd, vertical: spaceSm),
-          textStyle: GoogleFonts.inter(
+          textStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
@@ -188,38 +187,38 @@ class AppTheme {
       onError: Colors.black,
     );
 
-    final textTheme = TextTheme(
-      displayLarge: GoogleFonts.merriweather(
+    const textTheme = TextTheme(
+      displayLarge: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w700,
         height: 1.2,
         color: _darkOnSurface,
       ),
-      headlineLarge: GoogleFonts.merriweather(
+      headlineLarge: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w600,
         height: 1.25,
         color: _darkOnSurface,
       ),
-      titleLarge: GoogleFonts.merriweather(
+      titleLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         height: 1.3,
         color: _darkOnSurface,
       ),
-      bodyLarge: GoogleFonts.inter(
+      bodyLarge: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 1.4,
         color: _darkOnSurface,
       ),
-      labelSmall: GoogleFonts.inter(
+      labelSmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         height: 1.2,
         color: _darkOnSurface,
       ),
-      bodySmall: GoogleFonts.inter(
+      bodySmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w400,
         height: 1.2,
@@ -255,6 +254,10 @@ class AppTheme {
             borderRadius: BorderRadius.circular(radiusChip),
           ),
           padding: EdgeInsets.symmetric(horizontal: spaceMd, vertical: spaceSm),
+          textStyle: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       listTileTheme: ListTileThemeData(

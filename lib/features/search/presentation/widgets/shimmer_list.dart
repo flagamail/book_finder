@@ -27,7 +27,7 @@ class ShimmerList extends StatelessWidget {
               Container(
                 width: 64, // Aligned with theme.md thumbnail size
                 height: 96, // Aligned with theme.md thumbnail size
-                color: theme.colorScheme.surface, // Use theme color
+                color: shimmerStyle.baseColor, // Use shimmer base color
               ),
               const SizedBox(width: AppTheme.spaceMd),
               Expanded(
@@ -37,13 +37,13 @@ class ShimmerList extends StatelessWidget {
                     Container(
                       height: 16,
                       width: double.infinity,
-                      color: theme.colorScheme.surface,
+                      color: shimmerStyle.baseColor, // Use shimmer base color
                     ),
                     const SizedBox(height: AppTheme.spaceSm),
                     Container(
                       height: 12,
                       width: 100,
-                      color: theme.colorScheme.surface,
+                      color: shimmerStyle.baseColor, // Use shimmer base color
                     ),
                   ],
                 ),
