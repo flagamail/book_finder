@@ -168,6 +168,68 @@ void main() {
     );
 
     blocTest<SearchBloc, SearchState>(
+      'emits only last event after rapid multiple LoadNextPage events (debounce)',
+      build: () {
+        when(() => repository.searchBooks('flutter', page: 1))
+            .thenAnswer((_) async => Right(books));
+        when(() => repository.searchBooks('flutter', page: 2))
+            .thenAnswer((_) async => Right([Book(id: '3', title: 'Book 3', author: 'Author 3')]));
+        return bloc;
+      },
+      act: (bloc) async {
+        bloc.add(SearchRequested('flutter'));
+        await Future.delayed(const Duration(milliseconds: 350));
+        bloc.add(LoadNextPage());
+        await Future.delayed(const Duration(milliseconds: 100));
+        bloc.add(LoadNextPage());
+        await Future.delayed(const Duration(milliseconds: 100));
+        bloc.add(LoadNextPage());
+      },
+      wait: const Duration(milliseconds: 900),
+      expect: () => [
+        SearchLoadInProgress(),
+        SearchLoadSuccess(books, hasReachedMax: false),
+        SearchLoadSuccess(
+          [...books, Book(id: '3', title: 'Book 3', author: 'Author 3')],
+          hasReachedMax: false,
+        ),
+      ],
+      verify: (_) {
+        verify(() => repository.searchBooks('flutter', page: 2)).called(1);
+      },
+    );
+
+    blocTest<SearchBloc, SearchState>(
+      'emits failure for last event after rapid multiple LoadNextPage events with repository failure',
+      build: () {
+        when(() => repository.searchBooks('flutter', page: 1))
+            .thenAnswer((_) async => Right(books));
+        when(() => repository.searchBooks('flutter', page: 2))
+            .thenAnswer((_) async => Left(NetworkFailure('Something went wrong')));
+        return bloc;
+      },
+      act: (bloc) async {
+        bloc.add(SearchRequested('flutter'));
+        await Future.delayed(const Duration(milliseconds: 350));
+        bloc.add(LoadNextPage());
+        await Future.delayed(const Duration(milliseconds: 100));
+        bloc.add(LoadNextPage());
+        await Future.delayed(const Duration(milliseconds: 100));
+        bloc.add(LoadNextPage());
+      },
+      wait: const Duration(milliseconds: 900),
+      expect: () => [
+        SearchLoadInProgress(),
+        SearchLoadSuccess(books, hasReachedMax: false),
+        SearchLoadFailure('Something went wrong', books: books),
+      ],
+      verify: (_) {
+        verify(() => repository.searchBooks('flutter', page: 2)).called(1);
+        verifyNever(() => repository.searchBooks('flutter', page: 3));
+      },
+    );
+
+    blocTest<SearchBloc, SearchState>(
       'retries search on RetryRequested',
       build: () {
         when(() => repository.searchBooks('flutter', page: 1))
@@ -189,4 +251,3 @@ void main() {
     );
   });
 }
-

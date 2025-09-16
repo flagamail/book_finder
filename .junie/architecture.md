@@ -79,3 +79,23 @@ Testing
 - Repositories: mock data sources (mocktail)
 - Blocs: bloc_test
 - Widgets: golden/widget tests for SearchPage, DetailsPage
+
+---
+
+## Use Cases vs. Repositories: The Golden Rule
+
+To maintain a clean and scalable architecture, it's crucial to differentiate the responsibilities of the Use Case and Repository layers.
+
+### Use Cases
+
+**Responsibility:** Orchestrate and merge data from **DIFFERENT repositories**.
+
+- Use cases are for encapsulating complex business rules.
+- They are essential when a single user action requires data from multiple, distinct repositories (e.g., combining `UserRepository` and `BookRepository` to create a personalized book list).
+
+### Repositories
+
+**Responsibility:** Orchestrate and merge data from **DIFFERENT data sources** for the *same entity*.
+
+- Repositories are responsible for abstracting the origin of data. The rest of the app should not know if the data is coming from a remote API, a local database, or a combination of both.
+- This is the correct place to implement logic like caching, offline-first strategies, or any other data source management.

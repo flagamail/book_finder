@@ -85,7 +85,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           appLogger.e(
             'LoadNextPage Failure: ${failure.message}',
           );
-          emit(SearchLoadFailure(failure.message));
+          emit(SearchLoadFailure(failure.message, books: currentState.books));
         },
         (newBooks) {
           appLogger.i('Loaded ${newBooks.length} new books for page $_page');

@@ -1,4 +1,5 @@
 import 'package:book_finder/core/utils/app_logger.dart';
+import 'package:book_finder/domain/entities/book.dart';
 import 'package:book_finder/features/details/presentation/pages/details_page.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_bloc.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_event.dart';
@@ -41,7 +42,16 @@ class _SearchPageState extends State<SearchPage> {
             },
           ),
           Expanded(
-            child: BlocBuilder<SearchBloc, SearchState>(
+            child: BlocConsumer<SearchBloc, SearchState>(
+              listener: (context, state) {
+                if (state is SearchLoadFailure && state.books != null) {
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(content: Text(state.message)),
+                    );
+                }
+              },
               builder: (context, state) {
                 if (state is SearchInitial) {
                   return const EmptyMessage(message: 'Search for books to get started!');
@@ -49,7 +59,7 @@ class _SearchPageState extends State<SearchPage> {
                 if (state is SearchLoadInProgress) {
                   return const ShimmerList();
                 }
-                if (state is SearchLoadFailure) {
+                if (state is SearchLoadFailure && state.books == null) {
                   return ErrorMessage(
                     message: state.message,
                     onRetry: () {
@@ -57,8 +67,20 @@ class _SearchPageState extends State<SearchPage> {
                     },
                   );
                 }
+
+                List<Book>? books;
+                bool hasReachedMax = false;
+
                 if (state is SearchLoadSuccess) {
-                  if (state.books.isEmpty) {
+                  books = state.books;
+                  hasReachedMax = state.hasReachedMax;
+                } else if (state is SearchLoadFailure && state.books != null) {
+                  books = state.books;
+                  hasReachedMax = true;
+                }
+
+                if (books != null) {
+                  if (books.isEmpty) {
                     return const EmptyMessage(message: 'No books found.');
                   }
                   return RefreshIndicator(
@@ -67,12 +89,13 @@ class _SearchPageState extends State<SearchPage> {
                     },
                     child: ListView.builder(
                       controller: _scrollController,
-                      itemCount: state.hasReachedMax ? state.books.length : state.books.length + 1,
+                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                      itemCount: hasReachedMax ? books.length : books.length + 1,
                       itemBuilder: (context, index) {
-                        if (index >= state.books.length) {
+                        if (index >= books!.length) {
                           return const Center(child: CircularProgressIndicator());
                         }
-                        final book = state.books[index];
+                        final book = books[index];
                         return BookListItem(
                           id: book.id,
                           title: book.title,
