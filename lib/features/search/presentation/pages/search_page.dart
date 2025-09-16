@@ -1,3 +1,4 @@
+import 'package:book_finder/core/utils/app_logger.dart';
 import 'package:book_finder/features/details/presentation/pages/details_page.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_bloc.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_event.dart';
@@ -107,13 +108,16 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<SearchBloc>().add(LoadNextPage());
+    if (_isBottom) {
+      appLogger.i('Scroll reaching bottom, try loading next page');
+      context.read<SearchBloc>().add(LoadNextPage());
+    }
   }
 
   bool get _isBottom {
     if (!_scrollController.hasClients) return false;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.9);
+    return currentScroll >= (maxScroll * 0.8);
   }
 }

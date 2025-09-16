@@ -6,9 +6,18 @@ import 'package:book_finder/features/search/presentation/bloc/search_state.dart'
 import 'package:stream_transform/stream_transform.dart';
 
 const _duration = Duration(milliseconds: 300);
+const _durationLoadNext = Duration(milliseconds: 500);
 
 EventTransformer<Event> debounce<Event>(Duration duration) {
-  return (events, mapper) => events.debounce(duration).switchMap(mapper);
+  return (events, mapper) {
+    return events.asyncExpand((event) {
+      appLogger.d('[debounce] Event received: $event');
+      return Stream.value(event);
+    }).debounce(duration).asyncExpand((event) {
+      appLogger.d('[debounce] Event sent to handler after debounce: $event');
+      return mapper(event);
+    });
+  };
 }
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
@@ -16,9 +25,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   SearchBloc({required this.searchRepository}) : super(SearchInitial()) {
     on<SearchRequested>(_onSearchRequested, transformer: debounce(_duration));
-    on<LoadNextPage>(_onLoadNextPage);
+    on<LoadNextPage>(_onLoadNextPage, transformer: debounce(_durationLoadNext));
     on<RetryRequested>(_onRetryRequested);
-
     appLogger.d('SearchBloc initialized');
   }
 
