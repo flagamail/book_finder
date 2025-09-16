@@ -1,4 +1,6 @@
+import 'package:book_finder/app/di.dart';
 import 'package:book_finder/domain/entities/book.dart';
+import 'package:book_finder/domain/repositories/book_repository.dart';
 import 'package:book_finder/features/details/presentation/widgets/animated_cover.dart';
 import 'package:book_finder/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,18 @@ class DetailsPage extends StatelessWidget {
   final Book book;
   const DetailsPage({super.key, required this.book});
 
+  void _saveBook(BuildContext context) {
+    // Save book locally using injected repository
+    final repo = sl<BookRepository>();
+    repo.saveBook(book);
+  }
+
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _saveBook(context);
+    });
+
     final theme = Theme.of(context);
 
     return Scaffold(

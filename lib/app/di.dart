@@ -5,6 +5,8 @@ import 'package:book_finder/features/search/data/datasources/search_remote_data_
 import 'package:book_finder/features/search/data/repositories/search_repository_impl.dart';
 import 'package:book_finder/features/search/domain/repositories/search_repository.dart';
 import 'package:book_finder/features/search/presentation/bloc/search_bloc.dart';
+import 'package:book_finder/domain/repositories/book_repository.dart';
+import 'package:book_finder/core/utils/book_local_data_source.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
@@ -38,4 +40,8 @@ void init() {
       ));
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
   sl.registerLazySingleton<Logger>(() => Logger());
+
+  // Book features
+  sl.registerLazySingleton<BookLocalDataSource>(() => BookLocalDataSource());
+  sl.registerLazySingleton<BookRepository>(() => BookRepository(sl<BookLocalDataSource>()));
 }
